@@ -3,6 +3,8 @@
 #include "Shape.h"
 #include <iostream>
 #include <cstdlib>
+#include <iomanip>
+
 
 Board::Board(int gridSize) : gridSize(gridSize) {
     board.resize(gridSize, std::vector<char>(gridSize, ' '));
@@ -14,29 +16,30 @@ Board::Board(int gridSize) : gridSize(gridSize) {
 
 Board::~Board() {}
 
+
 void Board::display() const {
-    std::cout << "   ";
+    // Afficher les en-têtes de colonne avec une largeur fixe
+    std::cout << std::setw(4) << "";  // Pour l'espace avant la première colonne
     for (int col = 1; col <= gridSize; ++col) {
-        std::cout << col << "   ";
+        std::cout << std::setw(4) << col;
     }
     std::cout << '\n';
 
     for (int row = 1; row <= gridSize; ++row) {
-        if (row < 10) {
-            std::cout << row << "  ";
-        }
-        else {
-            std::cout << row << " ";
-        }
+        // Afficher les en-têtes de ligne avec une largeur fixe
+        std::cout << std::setw(4) << row;
 
         for (int col = 1; col <= gridSize; ++col) {
+            // Afficher le contenu de chaque cellule avec une largeur fixe
             char cellContent = board[row - 1][col - 1];
-            std::cout << ((cellContent == ' ') ? '.' : cellContent) << "   ";
+            std::cout << std::setw(4) << ((cellContent == ' ') ? '.' : cellContent);
         }
 
         std::cout << '\n';
     }
 }
+
+
 
 void Board::setPlayerColor(int playerNumber, char color) {
     playerColors[playerNumber] = color;

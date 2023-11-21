@@ -36,6 +36,7 @@ int main() {
         for (const char& color : COLORS) {
             std::cout << color << ' ';
         }
+
         std::cout << "): ";
         std::cin >> playerColor;
 
