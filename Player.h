@@ -13,13 +13,14 @@ public:
     void setName(const std::string& name);
     std::string getName() const;
 
-    void setColor(const std::string& color);
-    std::string getColor() const;
+    void setColor(char color);
+
+    char getColor() const;
 
     void giveStartingTile();
     void giveTileExchangeCoupon();
 
-    // Add these methods for shape exchange coupons
+    // Ajouter ces méthodes pour les coupons d'échange de formes
     int getShapeExchangeCoupons() const;
     void useShapeExchangeCoupon();
 
@@ -28,12 +29,12 @@ public:
     void displayTerritory() const;
 
     int getNumber() const;
-    // Add this method to set the player's number
+    // Ajouter cette méthode pour définir le numéro du joueur
     void setNumber(int num);
 
 private:
     std::string name;
-    std::string color;
+    char color;  // Déclaré une seule fois ici comme un char
     bool hasStartingTile;
     int tileExchangeCoupons;
     int shapeExchangeCoupons;

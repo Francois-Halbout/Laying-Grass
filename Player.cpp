@@ -2,11 +2,11 @@
 #include <iostream>
 
 Player::Player() : hasStartingTile(false), tileExchangeCoupons(0), shapeExchangeCoupons(0), number(0) {
-    // Initialize territory with an empty 2D vector
+    // Initialiser le territoire avec un vecteur 2D vide
     territory.resize(3, std::vector<char>());
 }
 
-// Implement the getNumber method
+// Implémenter la méthode getNumber
 int Player::getNumber() const {
     return number;
 }
@@ -21,11 +21,11 @@ std::string Player::getName() const {
     return name;
 }
 
-void Player::setColor(const std::string& playerColor) {
+void Player::setColor(char playerColor) {
     color = playerColor;
 }
 
-std::string Player::getColor() const {
+char Player::getColor() const {
     return color;
 }
 
@@ -46,7 +46,7 @@ void Player::useShapeExchangeCoupon() {
 }
 
 void Player::addTileToTerritory(const Shape1& tile) {
-    // Add the tile to the player's territory
+    // Ajouter la tuile au territoire du joueur
     const auto& tileShape = tile.getShape();
     for (size_t i = 0; i < tileShape.size(); ++i) {
         for (size_t j = 0; j < tileShape[i].size(); ++j) {
@@ -58,17 +58,17 @@ void Player::addTileToTerritory(const Shape1& tile) {
 }
 
 bool Player::canPlaceTile(const Shape1& tile) const {
-    // Check if the tile can be placed according to the rules
-    // (touching the starting tile and not overlapping)
-    // Implement this based on your game rules.
-    // For simplicity, this example assumes that the tile must touch the existing territory.
-    // You may need to modify this according to your specific game rules.
+    // Vérifier si la tuile peut être placée selon les règles
+    // (toucher la tuile de départ et ne pas se chevaucher)
+    // Implémentez cela en fonction de vos règles de jeu.
+    // Pour simplifier, cet exemple suppose que la tuile doit toucher le territoire existant.
+    // Vous devrez peut-être modifier cela en fonction de vos règles spécifiques du jeu.
     return true;
 }
 
 void Player::displayTerritory() const {
-    // Display the player's territory
-    std::cout << "Player " << name << "'s Territory:\n";
+    // Afficher le territoire du joueur
+    std::cout << "Territoire du joueur " << name << ":\n";
     for (const auto& row : territory) {
         for (char cell : row) {
             std::cout << cell;
@@ -77,7 +77,7 @@ void Player::displayTerritory() const {
     }
 }
 
-// Implement the setNumber method
+// Implémenter la méthode setNumber
 void Player::setNumber(int num) {
     number = num;
 }

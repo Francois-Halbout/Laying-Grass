@@ -18,29 +18,50 @@ int main() {
     std::cout << "Enter the number of players (2 to 9): ";
     std::cin >> numPlayers;
 
+    const char COLORS[] = { 
+        'R',
+        'B',
+        'G', 
+        'Y',
+        'O',
+        'P',
+        'C', 
+        'M', 
+        'V' };
+
     if (numPlayers < 2 || numPlayers > 9) {
         std::cerr << "Invalid number of players. Exiting.\n";
         return 1;
     }
 
-    // Create players
     for (int i = 0; i < numPlayers; ++i) {
         Player player;
         std::string playerName;
-        std::string playerColor;
+        char playerColor;
 
         std::cout << "Enter name for Player " << i + 1 << ": ";
         std::cin >> playerName;
         player.setName(playerName);
 
-        std::cout << "Enter color for Player " << i + 1 << ": ";
+        std::cout << "Enter color for Player " << i + 1 << " (";
+        for (const char& color : COLORS) {
+            std::cout << color << ' ';
+        }
+        std::cout << "): ";
         std::cin >> playerColor;
-        player.setColor(playerColor);
 
+        // Vérifiez si la couleur saisie est dans le tableau COLORS
+        auto colorIt = std::find(std::begin(COLORS), std::end(COLORS), playerColor);
+        if (colorIt == std::end(COLORS)) {
+            std::cerr << "Invalid color. Exiting.\n";
+            return 1;
+        }
+
+        player.setColor(playerColor);
         player.giveStartingTile();
         player.giveTileExchangeCoupon();
 
-        // Set the player number
+        // Définir le numéro du joueur
         player.setNumber(i + 1);
 
         players.push_back(player);
@@ -63,40 +84,70 @@ int main() {
     }
 
     // Gameplay loop
-    for (int round = 1; round <= 2; ++round) {
-        std::cout << "\nRound " << round << " starts!\n";
+    for (int round = 1; round <= 9; ++round) {  // Update the number of rounds
+        std::cout << "Current round: " << round << "\n";
 
         for (auto& player : players) {
             std::cout << "Player " << player.getName() << ", it's your turn!\n";
 
-            // Display the current board
-            std::cout << "Current Board:\n";
-            gameBoard.display();
-
             // Check if allShapes is not empty before accessing back()
             if (!allShapes.empty()) {
                 // Ask the player to place their shape
-                Shape1 currentShape = allShapes.back(); // Assuming allShapes is a vector containing shapes
+                Shape1 currentShape = allShapes.back();
 
-                int row, col;
-                std::cout << "Enter the row and column to place the shape (e.g., 2 3): ";
-                std::cin >> row >> col;
+                if (player.getShapeExchangeCoupons() > 0) {
+                    std::cout << "Do you want to use a shape exchange coupon? (1 for Yes, 0 for No): ";
+                    int useCoupon;
+                    std::cin >> useCoupon;
 
-                // Keep asking until the player makes a valid move
-                while (!gameBoard.placeShape(currentShape, player.getNumber(), row, col)) {
-                    std::cout << "Try again.\n";
-                    std::cout << "Enter the row and column to place the shape (e.g., 2 3): ";
-                    std::cin >> row >> col;
+                    if (useCoupon == 1) {
+                        player.useShapeExchangeCoupon();
+
+                        // Display the next five shapes
+                        std::cout << "Next five shapes:\n";
+                        for (size_t i = 0; i < 5 && i < allShapes.size(); ++i) {
+                            allShapes[i].display();
+                        }
+
+                        // Ask the player to choose a shape
+                        int shapeChoice;
+                        std::cout << "Choose a shape (1 to 5): ";
+                        std::cin >> shapeChoice;
+
+                        if (shapeChoice >= 1 && shapeChoice <= 5) {
+                            currentShape = allShapes[shapeChoice - 1];
+                            // Remove the chosen shape from allShapes
+                            allShapes.erase(allShapes.begin() + shapeChoice - 1);
+                        }
+                    }
                 }
 
-                // Remove the placed shape from allShapes
-                allShapes.pop_back();
+                int row, col;
+
+
+                // Keep asking until the player makes a valid move
+                while (true) {
+                    std::cout << "Enter the row and column to place the shape : ";
+                    std::cin >> row >> col;
+
+                    if (gameBoard.placeShape(currentShape, player.getNumber(), row, col) && player.canPlaceTile(currentShape)) {
+                        // Valid move, break out of the loop
+                        break;
+                    }
+                    else {
+                        std::cout << "Invalid move. Try again.\n";
+                    }
+                } 
+
+                // Display the updated board
+                std::cout << "Current Board:\n";
+                gameBoard.display();
+                std::cout << std::endl;
             }
 
-            // ... (Continue with the rest of the gameplay logic)
+            // ... (Continue with the rest of the gameplay logic, including bonus squares)
         }
     }
-
 
     return 0;
 }

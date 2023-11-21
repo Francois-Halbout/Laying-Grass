@@ -15,8 +15,11 @@ public:
 
     void display() const;
 
-    // Add this member function to get the shape
+    // Ajoutez ces fonctions pour obtenir la forme, la hauteur et la largeur
     const std::vector<std::vector<char>>& getShape() const;
+    int getHeight() const;
+    int getWidth() const;
+    char getCell(int row, int col) const;
 
 private:
     std::vector<std::vector<char>> shape;

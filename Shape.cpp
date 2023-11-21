@@ -4,7 +4,7 @@
 #include <iostream>
 
 Shape1::Shape1() {
-    // Initialize the L-shaped tile
+    // Initialisez la tuile en forme de L
     shape = { {'#', ' ', ' '},
              {'#', ' ', ' '},
              {'#', '#', ' '} };
@@ -39,7 +39,22 @@ void Shape1::display() const {
     }
 }
 
-// Implement the getShape function
+// Implémentez les fonctions pour obtenir la forme, la hauteur et la largeur
 const std::vector<std::vector<char>>& Shape1::getShape() const {
     return shape;
+}
+
+int Shape1::getHeight() const {
+    return shape.size();
+}
+
+int Shape1::getWidth() const {
+    if (shape.empty()) {
+        return 0;
+    }
+    return shape[0].size();
+}
+
+char Shape1::getCell(int row, int col) const {
+    return shape[row][col];
 }
