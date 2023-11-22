@@ -10,7 +10,7 @@
 
 Board::Board(int gridSize) : gridSize(gridSize) {
     board.resize(gridSize, std::vector<char>(gridSize, 0));
-    boardPlayeur.resize(gridSize, std::vector<char>(gridSize, '0'));
+    boardPlayeur.resize(gridSize, std::vector<char>(gridSize, 0));
 
     for (int i = 1; i <= 9; ++i) {
         char color = playerToColor(i);
@@ -47,10 +47,9 @@ void Board::display() const {
             // Display the content of each cell on the board
             char cellContent = board[row - 1][col - 1];
 
-            char cellPlayer = boardPlayeur[row - 1][col - 1];
-            if (cellPlayer >= '1' && cellPlayer <= '9') {
-                int playerNumber = cellPlayer - '0';
-                char cellColor = playerColors.at(playerNumber);
+            int cellPlayer = boardPlayeur[row - 1][col - 1];
+            if (cellPlayer >= 1 && cellPlayer <= 9) {
+                char cellColor = playerColors.at(cellPlayer);
 
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), cellColor);
             }
@@ -129,8 +128,7 @@ void Board::setPlayerStartingPosition(int playerNumber, char color) {
     int centerY = (playerNumber - 1) / (gridSize / 10) * 10 + 5;
 
     // Set the player's number in the center of their square
-    char playerChar = '0' + static_cast<char>(playerNumber);
-    boardPlayeur[centerY - 1][centerX - 1] = playerChar;
+    boardPlayeur[centerY - 1][centerX - 1] = playerNumber;
     board[centerY - 1][centerX - 1] = boardCode(10 + playerNumber);
 }
 
@@ -147,16 +145,57 @@ bool Board::placeShape(const Shape1& shape, int playerNumber, int row, int col) 
 
     for (size_t i = 0; i < shape.getHeight(); ++i) {
         for (size_t j = 0; j < shape.getWidth(); ++j) {
-            if (shape.getCell(i, j) != ' ' && boardPlayeur[row - 1 + i][col - 1 + j] != '0') {
+            if (shape.getCell(i, j) != ' ' && board[row - 1 + i][col - 1 + j] != 0) {
                 return false;
             }
         }
     }
 
+    // condition d'arrêt si il y a un ennemi collé
+    //for (size_t i = 0; i < shape.getHeight(); ++i) {
+    //    for (size_t j = 0; j < shape.getWidth(); ++j) {
+    //        if (shape.getCell(i, j) != ' ') {
+    //            // Vérifier que l'index n'est pas négatif avant d'accéder à board
+    //            if (row - 2 + i > 0 && board[row - 2 + i][col - 1 + j] != playerNumber && board[row - 2 + i][col - 1 + j] != '0') {
+    //                return false;
+    //            }
+    //            if (col - 2 + j > 0 && board[row - 1 + i][col - 2 + j] != playerNumber && board[row - 1 + i][col - 2 + j] != '0') {
+    //                return false;
+    //            }
+    //            if (col + j < gridSize - 1 && board[row - 1 + i][col + j] != playerNumber && board[row - 1 + i][col + j] != '0') {
+    //                return false;
+    //            }
+    //            if (row + i < gridSize - 1 && board[row + i][col - 1 + j] != playerNumber && board[row + i][col - 1 + j] != '0') {
+    //                return false;
+    //            }
+    //        }
+    //    }
+    //}
+
+    // condition d'arrêt si il n'y a pas de carré du joueur collé
+    //bool state = true;
+    //for (size_t i = 0; i < shape.getHeight(); ++i) {
+    //    for (size_t j = 0; j < shape.getWidth(); ++j) {
+    //        if (shape.getCell(i, j) != ' ') {
+    //            // Vérifier que l'index n'est pas négatif avant d'accéder à board
+    //            if (row - 2 + i >= 0 && board[row - 2 + i][col - 1 + j] == playerNumber ||
+    //                col - 2 + j >= 0 && board[row - 1 + i][col - 2 + j] == playerNumber ||
+    //                col + j < board[row - 1 + i].size() && board[row - 1 + i][col + j] == playerNumber ||
+    //                row + i < board.size() && board[row + i][col - 1 + j] == playerNumber) {
+    //                state = false;
+    //            }
+    //        }
+    //    }
+    //}
+
+    //if (state) {
+    //    return false;
+    //}
+
     for (size_t i = 0; i < shape.getHeight(); ++i) {
         for (size_t j = 0; j < shape.getWidth(); ++j) {
             if (shape.getCell(i, j) != ' ') {
-                boardPlayeur[row - 1 + i][col - 1 + j] = '0' + playerNumber;
+                boardPlayeur[row - 1 + i][col - 1 + j] = playerNumber;
                 board[row - 1 + i][col - 1 + j] = 1;
             }
         }
