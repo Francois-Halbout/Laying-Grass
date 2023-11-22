@@ -5,13 +5,15 @@
 #include <cstdlib>
 #include <iomanip>
 #include <Windows.h>
+#include <typeinfo>
 
 
 Board::Board(int gridSize) : gridSize(gridSize) {
     board.resize(gridSize, std::vector<char>(gridSize, ' '));
 
     for (int i = 1; i <= 9; ++i) {
-        playerColors[i] = '#';
+        char color = playerToColor(i);
+        playerColors[i] = color;
     }
 }
 
@@ -43,16 +45,22 @@ void Board::display() const {
         for (int col = 1; col <= gridSize; ++col) {
             // Display the content of each cell on the board
             char cellContent = board[row - 1][col - 1];
+            if (cellContent >= '1' && cellContent <= '9') {
+                int playerNumber = cellContent - '0';
+                char cellColor = playerColors.at(playerNumber);
 
-            // Convert the player number to color before setting the text attribute
-            int playerColor = (cellContent >= '1' && cellContent <= '9') ? playerToColor(cellContent - '0') : 15;
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), playerColor);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), cellColor);
+            }
+            else {
+                // Réinitialiser la couleur à blanc par défaut pour les cellules vides
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+            }
 
             std::cout << ((cellContent == ' ') ? '.' : cellContent) << "   ";
-
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
         }
 
+        // Réinitialiser la couleur après avoir affiché une ligne
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
         std::cout << '\n';
     }
 
@@ -74,6 +82,23 @@ int Board::playerToColor(int playerNumber) const {
     }
 }
 
+int Board::lettreToColor(char lettre) const {
+    // Vous pouvez définir la correspondance entre les numéros de joueur et les numéros de couleur ici
+    switch (lettre) {
+    case 'R': return 4;  // Rouge
+    case 'B': return 1;  // Bleu
+    case 'V': return 2;  // Vert
+    case 'J': return 14; // Jaune (rouge + vert)
+    case 'O': return 6;  // Orange (rouge + vert)
+    case 'M': return 5;  // Mauve (rouge + bleu)
+    case 'C': return 3;  // Cyan (vert + bleu)
+    case '8': return 7;  // Blanc (rouge + bleu + vert)
+    case '9': return 10; // Vert (bleu + vert)
+    default: return 15;  // Blanc par défaut
+    }
+}
+
+
 void Board::setPlayerStartingPosition(int playerNumber, char color) {
     // Calculate the center of the player's square
     int centerX = (playerNumber - 1) % (gridSize / 10) * 10 + 5;
@@ -86,7 +111,8 @@ void Board::setPlayerStartingPosition(int playerNumber, char color) {
 
 
 void Board::setPlayerColor(int playerNumber, char color) {
-    playerColors[playerNumber] = color;
+    char playerColor = lettreToColor(color);
+    playerColors.at(playerNumber) = playerColor;
 }
 
 bool Board::placeShape(const Shape1& shape, int playerNumber, int row, int col) {
@@ -105,7 +131,7 @@ bool Board::placeShape(const Shape1& shape, int playerNumber, int row, int col) 
     for (size_t i = 0; i < shape.getHeight(); ++i) {
         for (size_t j = 0; j < shape.getWidth(); ++j) {
             if (shape.getCell(i, j) != ' ') {
-                board[row - 1 + i][col - 1 + j] = playerColors[playerNumber];
+                board[row - 1 + i][col - 1 + j] = '0' + playerNumber;
             }
         }
     }

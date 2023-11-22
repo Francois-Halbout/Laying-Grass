@@ -16,12 +16,17 @@ int main() {
     std::cout << "Enter the number of players (2 to 9): ";
     std::cin >> numPlayers;
 
-    const char COLORS[] = { 'R', 'B', 'G', 'Y', 'O', 'P', 'C', 'M', 'V' };
+    const char COLORS[] = { 'R', 'B', 'V', 'J', 'O', 'M', 'C', '8', '9' };
 
     if (numPlayers < 2 || numPlayers > 9) {
         std::cerr << "Invalid number of players. Exiting.\n";
         return 1;
     }
+
+
+    // Initialisation du plateau
+    int gridSize = (numPlayers <= 4) ? 20 : 30;
+    Board gameBoard(gridSize);
 
     for (int i = 0; i < numPlayers; ++i) {
         Player player;
@@ -41,12 +46,20 @@ int main() {
         std::cin >> playerColor;
 
         auto colorIt = std::find(std::begin(COLORS), std::end(COLORS), playerColor);
-        if (colorIt == std::end(COLORS)) {
+        while (colorIt == std::end(COLORS)) {
             std::cerr << "Invalid color. Exiting.\n";
-            return 1;
+            std::cout << "Enter color for Player " << i + 1 << " (";
+            for (const char& color : COLORS) {
+                std::cout << color << ' ';
+            }
+
+            std::cout << "): ";
+            std::cin >> playerColor;
+            colorIt = std::find(std::begin(COLORS), std::end(COLORS), playerColor);
         }
 
         player.setColor(playerColor);
+        gameBoard.setPlayerColor(i + 1, playerColor);
         player.giveStartingTile();
         player.giveTileExchangeCoupon();
 
@@ -55,9 +68,6 @@ int main() {
         players.push_back(player);
     }
 
-    // Initialisation du plateau
-    int gridSize = (numPlayers <= 4) ? 20 : 30;
-    Board gameBoard(gridSize);
 
     // Set starting positions for each player
     for (const auto& player : players) {

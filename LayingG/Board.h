@@ -21,6 +21,7 @@ private:
     std::vector<std::vector<char>> board;
     std::unordered_map<int, char> playerColors;
     int playerToColor(int playerNumber) const;
+    int lettreToColor(char lettre) const;
 };
 
 #endif // BOARD_H
