@@ -74,6 +74,9 @@ int main() {
         gameBoard.setPlayerStartingPosition(player.getNumber(), player.getColor());
     }
 
+    gameBoard.display();
+
+
     // Initialisation des tuiles
     std::vector<Tile> allTiles;
     for (int i = 0; i < 96; ++i) {
@@ -84,6 +87,8 @@ int main() {
     std::random_shuffle(allTiles.begin(), allTiles.end());
 
     // Boucle de jeu
+    // ...
+// Inside the game loop
     for (int round = 1; round <= 9; ++round) {
         std::cout << "Current round: " << round << "\n";
 
@@ -91,12 +96,13 @@ int main() {
             std::cout << "Player " << player.getName() << ", it's your turn!\n";
 
             if (!allTiles.empty()) {
-                // Demandez au joueur de manipuler et placer sa tuile
-                Tile currentTile = allTiles.back();
-                allTiles.pop_back();
+                // Display the current tile's shape
+                std::cout << "Current Tile:\n";
+                allTiles.back().display();
 
-                player.displayNextTiles();  // Afficher les tuiles suivantes
-                player.manipulateTile(currentTile);  // Permettre au joueur de manipuler la tuile
+                // Ask the player to manipulate and place the tile
+                player.displayNextTiles();  // Display the next tiles
+                player.manipulateTile(allTiles.back());  // Allow the player to manipulate the tile
 
                 int row, col;
 
@@ -104,7 +110,7 @@ int main() {
                     std::cout << "Enter the row and column to place the tile : ";
                     std::cin >> row >> col;
 
-                    if (gameBoard.placeShape(currentTile, player.getNumber(), row, col) && player.canPlaceTile(currentTile)) {
+                    if (gameBoard.placeShape(allTiles.back(), player.getNumber(), row, col) && player.canPlaceTile(allTiles.back())) {
                         break;
                     }
                     else {
@@ -115,9 +121,14 @@ int main() {
                 std::cout << "Current Board:\n";
                 gameBoard.display();
                 std::cout << std::endl;
+
+                // Remove the placed tile from the list
+                allTiles.pop_back();
             }
         }
     }
+    // ...
+
 
     return 0;
 }

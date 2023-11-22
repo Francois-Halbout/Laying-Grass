@@ -18,11 +18,11 @@ void Shape1::rotateClockwise() {
     shape = newShape;
 }
 
+
 void Shape1::flip() {
-    for (size_t i = 0; i < shape.size(); ++i) {
-        std::reverse(shape[i].begin(), shape[i].end());
-    }
+    std::reverse(shape.begin(), shape.end());
 }
+
 
 void Shape1::display() const {
     for (const auto& row : shape) {
