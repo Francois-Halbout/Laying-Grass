@@ -75,9 +75,9 @@ int Board::playerToColor(int playerNumber) const {
     case 4: return 14; // Jaune (rouge + vert)
     case 5: return 6;  // Orange (rouge + vert)
     case 6: return 5;  // Violet (rouge + bleu)
-    case 7: return 3;  // Cyan (vert + bleu)
-    case 8: return 7;  // Blanc (rouge + bleu + vert)
-    case 9: return 10; // Vert (bleu + vert)
+    case 7: return 10;  // Cyan (vert + bleu)
+    case 8: return 13; // fushia
+    case 9: return 8; // Gris 
     default: return 15;  // Blanc par défaut
     }
 }
@@ -91,9 +91,9 @@ int Board::lettreToColor(char lettre) const {
     case 'J': return 14; // Jaune (rouge + vert)
     case 'O': return 6;  // Orange (rouge + vert)
     case 'M': return 5;  // Mauve (rouge + bleu)
-    case 'C': return 3;  // Cyan (vert + bleu)
-    case '8': return 7;  // Blanc (rouge + bleu + vert)
-    case '9': return 10; // Vert (bleu + vert)
+    case 'C': return 10;  // Cyan (vert + bleu)
+    case 'F': return 13; // fushia
+    case 'G': return 8;  // Gris
     default: return 15;  // Blanc par défaut
     }
 }

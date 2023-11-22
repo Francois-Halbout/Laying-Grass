@@ -16,7 +16,7 @@ int main() {
     std::cout << "Enter the number of players (2 to 9): ";
     std::cin >> numPlayers;
 
-    const char COLORS[] = { 'R', 'B', 'V', 'J', 'O', 'M', 'C', '8', '9' };
+    const char COLORS[] = { 'R', 'B', 'V', 'J', 'O', 'M', 'C', 'F', 'G' };
 
     if (numPlayers < 2 || numPlayers > 9) {
         std::cerr << "Invalid number of players. Exiting.\n";
