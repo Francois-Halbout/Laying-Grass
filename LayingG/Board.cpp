@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <iomanip>
+#include <Windows.h>
 
 
 Board::Board(int gridSize) : gridSize(gridSize) {
@@ -18,27 +19,70 @@ Board::~Board() {}
 
 
 void Board::display() const {
-    // Afficher les en-têtes de colonne avec une largeur fixe
-    std::cout << std::setw(4) << "";  // Pour l'espace avant la première colonne
+    // Display the column headers
+    std::cout << "   ";
     for (int col = 1; col <= gridSize; ++col) {
-        std::cout << std::setw(4) << col;
+        if (col < 10) {
+            std::cout << col << "   "; // Adjust spacing for single-digit column numbers
+        }
+        else {
+            std::cout << col << "  ";  // Adjust spacing for double-digit column numbers
+        }
     }
     std::cout << '\n';
 
     for (int row = 1; row <= gridSize; ++row) {
-        // Afficher les en-têtes de ligne avec une largeur fixe
-        std::cout << std::setw(4) << row;
+        // Display the row header
+        if (row < 10) {
+            std::cout << row << "  "; // Adjust spacing for single-digit row numbers
+        }
+        else {
+            std::cout << row << " ";  // Adjust spacing for double-digit row numbers
+        }
 
         for (int col = 1; col <= gridSize; ++col) {
-            // Afficher le contenu de chaque cellule avec une largeur fixe
+            // Display the content of each cell on the board
             char cellContent = board[row - 1][col - 1];
-            std::cout << std::setw(4) << ((cellContent == ' ') ? '.' : cellContent);
+
+            // Convert the player number to color before setting the text attribute
+            int playerColor = (cellContent >= '1' && cellContent <= '9') ? playerToColor(cellContent - '0') : 15;
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), playerColor);
+
+            std::cout << ((cellContent == ' ') ? '.' : cellContent) << "   ";
+
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
         }
 
         std::cout << '\n';
     }
+
 }
 
+int Board::playerToColor(int playerNumber) const {
+    // Vous pouvez définir la correspondance entre les numéros de joueur et les numéros de couleur ici
+    switch (playerNumber) {
+    case 1: return 4;  // Rouge
+    case 2: return 1;  // Bleu
+    case 3: return 2;  // Vert
+    case 4: return 14; // Jaune (rouge + vert)
+    case 5: return 6;  // Orange (rouge + vert)
+    case 6: return 5;  // Violet (rouge + bleu)
+    case 7: return 3;  // Cyan (vert + bleu)
+    case 8: return 7;  // Blanc (rouge + bleu + vert)
+    case 9: return 10; // Vert (bleu + vert)
+    default: return 15;  // Blanc par défaut
+    }
+}
+
+void Board::setPlayerStartingPosition(int playerNumber, char color) {
+    // Calculate the center of the player's square
+    int centerX = (playerNumber - 1) % (gridSize / 10) * 10 + 5;
+    int centerY = (playerNumber - 1) / (gridSize / 10) * 10 + 5;
+
+    // Set the player's number in the center of their square
+    char playerChar = '0' + static_cast<char>(playerNumber);
+    board[centerY - 1][centerX - 1] = playerChar;
+}
 
 
 void Board::setPlayerColor(int playerNumber, char color) {

@@ -59,6 +59,11 @@ int main() {
     int gridSize = (numPlayers <= 4) ? 20 : 30;
     Board gameBoard(gridSize);
 
+    // Set starting positions for each player
+    for (const auto& player : players) {
+        gameBoard.setPlayerStartingPosition(player.getNumber(), player.getColor());
+    }
+
     // Initialisation des tuiles
     std::vector<Tile> allTiles;
     for (int i = 0; i < 96; ++i) {
