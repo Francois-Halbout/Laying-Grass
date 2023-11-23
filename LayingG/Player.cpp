@@ -83,14 +83,6 @@ const std::vector<Shape1>& Player::getNextTiles() const {
     return nextTiles;
 }
 
-void Player::displayNextTiles() const {
-    std::cout << "Next tiles:\n";
-    for (const auto& tile : nextTiles) {
-        tile.display();
-    }
-}
-
-
 
 // Inside the Player class implementation
 Shape1 Player::manipulateTile(Shape1& tile) {
@@ -116,8 +108,16 @@ Shape1 Player::manipulateTile(Shape1& tile) {
 void Player::displayEvolution(const Shape1& tile) const {
     std::cout << "Current Tile:\n";
     tile.display();
-    std::cout << "Next tiles:\n";
+
     for (const auto& nextTile : nextTiles) {
         nextTile.display();
+    }
+}
+
+void Player::displayNext5Tiles(int indexTile, std::vector<Shape1> allTiles) const {
+
+    for (int i = indexTile + 1; i < indexTile + std::min(indexTile + 6, static_cast<int>(allTiles.size())); ++i) {
+        std::cout << "Next tiles (" << i << "):\n";
+        allTiles.at(i).display();
     }
 }

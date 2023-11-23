@@ -29,10 +29,10 @@ void Board::display() const {
     std::cout << "   ";
     for (int col = 1; col <= gridSize; ++col) {
         if (col < 10) {
-            std::cout << col << "   "; // Adjust spacing for single-digit column numbers
+            std::cout << " " << col << " "; // Adjust spacing for single-digit column numbers
         }
         else {
-            std::cout << col << "  ";  // Adjust spacing for double-digit column numbers
+            std::cout << col << " ";  // Adjust spacing for double-digit column numbers
         }
     }
     std::cout << '\n';
@@ -40,7 +40,7 @@ void Board::display() const {
     for (int row = 1; row <= gridSize; ++row) {
         // Display the row header
         if (row < 10) {
-            std::cout << row << "  "; // Adjust spacing for single-digit row numbers
+            std::cout << " " << row << " "; // Adjust spacing for single-digit row numbers
         }
         else {
             std::cout << row << " ";  // Adjust spacing for double-digit row numbers
@@ -62,7 +62,12 @@ void Board::display() const {
             }
             char content = boardCode(cellContent);
 
-            std::cout << content << "   ";
+            if (cellContent == 1) {
+                std::cout << content << content << " ";
+            }
+            else {
+                std::cout << " " << content << " ";
+            }
         }
 
         // Réinitialiser la couleur après avoir affiché une ligne
@@ -75,8 +80,8 @@ void Board::display() const {
 char Board::boardCode(int caseCode) const {
     // Vous pouvez définir la correspondance entre les numéros de joueur et les numéros de couleur ici
     switch (caseCode) {
-    case 0: return '.'; // case vide
-    case 1: return '#'; // case pleine
+    case 0: return 240; // case vide
+    case 1: return 219; // case pleine
     case 2: return ' '; // mettre les icones des bonus
     case 3: return ' ';
     case 11: return '1'; // ça c'est pour le point de départs des joueurs
@@ -100,8 +105,8 @@ int Board::playerToColor(int playerNumber) const {
     case 3: return 2;  // Vert
     case 4: return 14; // Jaune (rouge + vert)
     case 5: return 6;  // Orange (rouge + vert)
-    case 6: return 5;  // Violet (rouge + bleu)
-    case 7: return 10;  // Cyan (vert + bleu)
+    case 6: return 5;  // Mauve (rouge + bleu)
+    case 7: return 11;  // Cyan (vert + bleu)
     case 8: return 13; // fushia
     case 9: return 8; // Gris 
     default: return 15;  // Blanc par défaut
@@ -117,7 +122,7 @@ int Board::lettreToColor(char lettre) const {
     case 'J': return 14; // Jaune (rouge + vert)
     case 'O': return 6;  // Orange (rouge + vert)
     case 'M': return 5;  // Mauve (rouge + bleu)
-    case 'C': return 10;  // Cyan (vert + bleu)
+    case 'C': return 11;  // Cyan (vert + bleu)
     case 'F': return 13; // fushia
     case 'G': return 8;  // Gris
     default: return 15;  // Blanc par défaut
@@ -142,7 +147,7 @@ void Board::setPlayerColor(int playerNumber, char color) {
 }
 
 bool Board::placeShape(const Shape1& shape, int playerNumber, int row, int col) {
-    if (row < 1 || row + shape.getHeight() - 1 > gridSize || col < 1 || col + shape.getWidth() - 1 > gridSize) {
+    if (row < 1 || row + shape.getHeight() >= gridSize +1 || col < 1 || col + shape.getWidth() >= gridSize + 1) {
         return false;
     }
 

@@ -33,9 +33,9 @@ public:
 
     void setNextTiles(int& indexTile);
     const std::vector<Shape1>& getNextTiles() const;
-    void displayNextTiles() const;
     Shape1 manipulateTile(Shape1& tile);
     void displayEvolution(const Shape1& tile) const;
+    void displayNext5Tiles(int indexTile, std::vector<Shape1> allTiles) const;
     int indexTile;
 
 private:

@@ -6,8 +6,11 @@
 #include "Tile.h"  // Ajout de l'inclusion de Tile.h
 #include <algorithm>
 #include <ctime>
+#include <string>
+#include <cstdlib>
 
 int main() {
+
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     // Display welcome message
@@ -29,18 +32,20 @@ int main() {
     }
     // Initialisation des joueurs
     std::vector<Player> players;
-    int numPlayers;
+    std::string numPlayersChar;
 
     std::cout << "Enter the number of players (2 to 9): ";
-    std::cin >> numPlayers;
+    std::cin >> numPlayersChar;
 
+    while (numPlayersChar.find_first_not_of("0123456789") != std::string::npos || std::stoi(numPlayersChar) < 2 || std::stoi(numPlayersChar) > 9) {
+        std::cerr << "Invalid number of players. Exiting.\n";
+        std::cout << "Enter the number of players (2 to 9): ";
+        std::cin >> numPlayersChar;
+    }
     const char COLORS[] = { 'R', 'B', 'V', 'J', 'O', 'M', 'C', 'F', 'G' };
 
-    if (numPlayers < 2 || numPlayers > 9) {
-        std::cerr << "Invalid number of players. Exiting.\n";
-        return 1;
-    }
 
+    int numPlayers = std::stoi(numPlayersChar);
 
     // Initialisation du plateau
     int gridSize = (numPlayers <= 4) ? 20 : 30;
@@ -106,7 +111,7 @@ int main() {
 
     // Boucle de jeu
     // ...
-// Inside the game loop
+    // Inside the game loop
     int indexTile = 0;
 
     for (int round = 1; round <= 9; ++round) {
@@ -123,7 +128,26 @@ int main() {
                 currentTile.display();
 
                 // Ask the player to manipulate and place the tile
-                player.displayNextTiles();  // Display the next tiles
+                char displayChoice;
+
+                // Continue asking until the player chooses 'N' for nothing
+                do {
+                    std::cout << "Display next 5 tiles (T), display the board (D), or do nothing (N): ";
+                    std::cin >> displayChoice;
+
+                    if (displayChoice == 'T' || displayChoice == 't') {
+                        player.displayNext5Tiles(indexTile, allTiles);
+                    }
+                    else if (displayChoice == 'D' || displayChoice == 'd') {
+                        std::cout << "Current Board:\n";
+                        gameBoard.display();
+                    }
+                } while (displayChoice != 'N' && displayChoice != 'n');
+
+                // Ask the player to manipulate and place the tile
+
+                std::cout << "Current tile:\n";
+                currentTile.display();
                 currentTile = player.manipulateTile(currentTile);  // Allow the player to manipulate the tile
 
                 int row, col;
