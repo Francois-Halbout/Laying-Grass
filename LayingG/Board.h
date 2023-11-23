@@ -23,7 +23,7 @@ private:
     std::unordered_map<int, char> playerColors;
     int playerToColor(int playerNumber) const;
     int lettreToColor(char lettre) const;
-    int boardCode(int caseCode) const;
+    char boardCode(int caseCode) const;
 };
 
 #endif // BOARD_H
