@@ -6,6 +6,7 @@
 Player::Player() : hasStartingTile(false), tileExchangeCoupons(0), shapeExchangeCoupons(0), number(0) {
     territory.resize(3, std::vector<char>());
     indexTile = 0;
+    haveSkip = true;
 }
 
 int Player::getNumber() const {
@@ -116,8 +117,8 @@ void Player::displayEvolution(const Shape1& tile) const {
 
 void Player::displayNext5Tiles(int indexTile, std::vector<Shape1> allTiles) const {
 
-    for (int i = indexTile + 1; i < indexTile + std::min(indexTile + 6, static_cast<int>(allTiles.size())); ++i) {
+    for (int i = 1; i < std::min(6, static_cast<int>(allTiles.size())); ++i) {
         std::cout << "Next tiles (" << i << "):\n";
-        allTiles.at(i).display();
+        allTiles.at(i + indexTile).display();
     }
 }

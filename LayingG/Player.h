@@ -37,6 +37,7 @@ public:
     void displayEvolution(const Shape1& tile) const;
     void displayNext5Tiles(int indexTile, std::vector<Shape1> allTiles) const;
     int indexTile;
+    bool haveSkip;
 
 private:
     std::string name;

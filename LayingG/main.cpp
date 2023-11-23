@@ -8,6 +8,8 @@
 #include <ctime>
 #include <string>
 #include <cstdlib>
+#include <cmath>
+
 
 int main() {
 
@@ -100,14 +102,17 @@ int main() {
     gameBoard.display();
 
     // Initialisation des tuiles
-    std::vector<Shape1> allTiles;
+    std::vector<Shape1> allTilesGame;
 
     Tile tiles;
-    for (int i = 0; i < 88; ++i) {
-        allTiles.push_back(Shape1(tiles.getShape(i)));
+    for (int i = 0; i < 96; ++i) {
+        allTilesGame.push_back(Shape1(tiles.getShape(i)));
     }
 
-    std::random_shuffle(allTiles.begin(), allTiles.end());
+    std::random_shuffle(allTilesGame.begin(), allTilesGame.end());
+
+    int n = std::ceil(10.67 * numPlayers);
+    std::vector<Shape1> allTiles(allTilesGame.begin(), allTilesGame.begin() + n);
 
     // Boucle de jeu
     // ...
@@ -132,7 +137,7 @@ int main() {
 
                 // Continue asking until the player chooses 'N' for nothing
                 do {
-                    std::cout << "Display next 5 tiles (T), display the board (D), or do nothing (N): ";
+                    std::cout << "Display next 5 tiles (T), skip (S), display the board (D), or do nothing (N): ";
                     std::cin >> displayChoice;
 
                     if (displayChoice == 'T' || displayChoice == 't') {
@@ -141,6 +146,22 @@ int main() {
                     else if (displayChoice == 'D' || displayChoice == 'd') {
                         std::cout << "Current Board:\n";
                         gameBoard.display();
+                    }
+                    else if (displayChoice == 'S' || displayChoice == 's') {
+                        if (player.haveSkip) {
+                            int rep = 0;
+                            while (1 > rep || rep > 5) {
+                                player.displayNext5Tiles(indexTile, allTiles);
+                                std::cout << "Vous voulez deplacer lequel ?(1,2,3,4,5) : ";
+                                std::cin >> rep;
+                            }
+                            indexTile = indexTile + rep;
+                            currentTile = allTiles.at(indexTile);
+                            player.haveSkip = false;
+                        }
+                        else {
+                            std::cout << "Vous ne pouvez plus skip\n";
+                        }
                     }
                 } while (displayChoice != 'N' && displayChoice != 'n');
 
@@ -168,8 +189,11 @@ int main() {
                 gameBoard.display();
                 std::cout << std::endl;
 
-                // Remove the placed tile from the list
-                indexTile = indexTile + 1;
+
+                if (indexTile >= allTiles.size()) {
+                    indexTile = 0;
+                }
+                allTiles.erase(allTiles.begin() + indexTile);
             }
         }
     }
