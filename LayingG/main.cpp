@@ -9,6 +9,23 @@
 int main() {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
+    // Display welcome message
+    std::cout << R"(
+				      _______        _______   ______               ______   ______
+|	  /\     \   /   |   |\   |  |              |         |      |      /\     |        |
+|	 /__\	  \ /    |   | \  |  |    ___       |    ___  |______|     /__\    |______  |______
+|	/    \     |     |   |  \ |  |       |      |       | |      \    /    \          |        |
+|_____ /      \    |     |   |   \|  |_______|      |_______| |       \  /      \  _______| _______|
+)" << "\n";
+
+    char playGame;
+    std::cout << "Hello! Welcome to Laying Grass. Do you want to play? (Y/N): ";
+    std::cin >> playGame;
+
+    if (playGame != 'Y' && playGame != 'y') {
+        std::cout << "Goodbye! Thanks for considering. Exiting.\n";
+        return 0;
+    }
     // Initialisation des joueurs
     std::vector<Player> players;
     int numPlayers;
@@ -127,7 +144,26 @@ int main() {
             }
         }
     }
-    // ...
+    // After the 9 rounds
+    std::cout << "The game is over.\n";
+
+    int maxScore = -1;
+    Player winner;
+
+    for (auto& player : players) {
+        int playerScore = gameBoard.calculatePlayerScore(player.getNumber());
+        std::cout << "Player " << player.getName() << " score: " << playerScore << '\n';
+
+        if (playerScore > maxScore || (playerScore == maxScore && playerScore > winner.getNumber())) {
+            maxScore = playerScore;
+            winner = player;
+        }
+    }
+
+    std::cout << "The winner is \"" << winner.getName() << "\"!\n";
+
+
+
 
 
     return 0;

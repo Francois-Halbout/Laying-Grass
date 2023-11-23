@@ -34,6 +34,7 @@ public:
     const std::vector<Shape1>& getNextTiles() const;
     void displayNextTiles() const;
     void manipulateTile(Shape1& tile);
+    void displayEvolution(const Shape1& tile) const;
 
 private:
     std::string name;

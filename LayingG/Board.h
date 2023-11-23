@@ -16,6 +16,9 @@ public:
     void setPlayerColor(int playerNumber, char color);
     void setPlayerStartingPosition(int playerNumber, char color);
 
+    int calculatePlayerScore(int playerNumber) const;  // Updated declaration
+    int calculateGrassCount(int playerNumber, int row, int col, int squareSize) const;  // New declaration
+
 private:
     int gridSize;
     std::vector<std::vector<char>> board;
@@ -23,7 +26,7 @@ private:
     std::unordered_map<int, char> playerColors;
     int playerToColor(int playerNumber) const;
     int lettreToColor(char lettre) const;
-    char boardCode(int caseCode) const;
+    int boardCode(int caseCode) const;
 };
 
 #endif // BOARD_H

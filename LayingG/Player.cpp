@@ -2,6 +2,7 @@
 #include "Player.h"
 #include <iostream>
 
+
 Player::Player() : hasStartingTile(false), tileExchangeCoupons(0), shapeExchangeCoupons(0), number(0) {
     territory.resize(3, std::vector<char>());
 }
@@ -88,15 +89,32 @@ void Player::displayNextTiles() const {
     }
 }
 
+
+
+// Inside the Player class implementation
 void Player::manipulateTile(Shape1& tile) {
     char choice;
-    std::cout << "Manipulate the tile (R: Rotate, F: Flip, X: Do nothing): ";
-    std::cin >> choice;
 
-    if (choice == 'R') {
-        tile.rotateClockwise();
-    }
-    else if (choice == 'F') {
-        tile.flip();
+    do {
+        std::cout << "Manipulate the tile (R: Rotate, F: Flip, X: Do nothing): ";
+        std::cin >> choice;
+
+        if (choice == 'R') {
+            tile.rotateClockwise();
+            displayEvolution(tile);
+        }
+        else if (choice == 'F') {
+            tile.flip();
+            displayEvolution(tile);
+        }
+    } while (choice == 'R' || choice == 'F');
+}
+
+void Player::displayEvolution(const Shape1& tile) const {
+    std::cout << "Current Tile:\n";
+    tile.display();
+    std::cout << "Next tiles:\n";
+    for (const auto& nextTile : nextTiles) {
+        nextTile.display();
     }
 }

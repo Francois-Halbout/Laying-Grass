@@ -8,6 +8,7 @@
 #include <typeinfo>
 
 
+// Inside the Board class implementation in board.cpp
 Board::Board(int gridSize) : gridSize(gridSize) {
     board.resize(gridSize, std::vector<char>(gridSize, 0));
     boardPlayeur.resize(gridSize, std::vector<char>(gridSize, 0));
@@ -17,6 +18,8 @@ Board::Board(int gridSize) : gridSize(gridSize) {
         playerColors[i] = color;
     }
 }
+
+
 
 Board::~Board() {}
 
@@ -69,7 +72,7 @@ void Board::display() const {
 
 }
 
-char Board::boardCode(int caseCode) const {
+int Board::boardCode(int caseCode) const {
     // Vous pouvez définir la correspondance entre les numéros de joueur et les numéros de couleur ici
     switch (caseCode) {
     case 0: return '.'; // case vide
@@ -143,8 +146,8 @@ bool Board::placeShape(const Shape1& shape, int playerNumber, int row, int col) 
         return false;
     }
 
-    for (size_t i = 0; i != shape.getHeight(); ++i) {
-        for (size_t j = 0; j != shape.getWidth(); ++j) {
+    for (size_t i = 0; i < shape.getHeight(); ++i) {
+        for (size_t j = 0; j < shape.getWidth(); ++j) {
             if (shape.getCell(i, j) != ' ' && board[row - 1 + i][col - 1 + j] != 0) {
                 return false;
             }
@@ -152,59 +155,48 @@ bool Board::placeShape(const Shape1& shape, int playerNumber, int row, int col) 
     }
 
     // condition d'arrêt si il y a un ennemi collé
-    for (size_t i = 0; i < shape.getHeight(); ++i) {
-        for (size_t j = 0; j < shape.getWidth(); ++j) {
-            if (shape.getCell(i, j) != ' ') {
-                // Vérifier que l'index n'est pas négatif et ne dépasse pas les limites du tableau
-                if (row - 1 + i > 0) {
-                    if (boardPlayeur[row - 1 + i - 1][col - 1 + j] != playerNumber && boardPlayeur[row - 1 + i - 1][col - 1 + j] != 0 && (1 <= boardPlayeur[row - 1 + i - 1][col - 1 + j] && boardPlayeur[row - 1 + i - 1][col - 1 + j] <= 9)) {
-                        return false;
-                    }
-                }
-                if (row - 1 + i < gridSize - 1) {
-                    if (boardPlayeur[row - 1 + i + 1][col - 1 + j] != playerNumber && boardPlayeur[row - 1 + i + 1][col - 1 + j] != 0 && (1 <= boardPlayeur[row - 1 + i + 1][col - 1 + j] && boardPlayeur[row - 1 + i + 1][col - 1 + j] <= 9)) {
-                        return false;
-                    }
-                }
-                if (col - 1 + j > 0) {
-                    if (boardPlayeur[row - 1 + i][col - 1 + j - 1] != playerNumber && boardPlayeur[row - 1 + i][col - 1 + j - 1] != 0 && (1 <= boardPlayeur[row - 1 + i][col - 1 + j - 1] && boardPlayeur[row - 1 + i][col - 1 + j - 1] <= 9)) {
-                        return false;
-                    }
-                }
-                if (col - 1 + j < gridSize - 1) {
-                    if (boardPlayeur[row - 1 + i][col - 1 + j + 1] != playerNumber && boardPlayeur[row - 1 + i][col - 1 + j + 1] != 0 && (1 <= boardPlayeur[row - 1 + i][col - 1 + j + 1] && boardPlayeur[row - 1 + i][col - 1 + j + 1] <= 9)) {
-                        return false;
-                    }
-                }
-            }
-        }
-    }
+    //for (size_t i = 0; i < shape.getHeight(); ++i) {
+    //    for (size_t j = 0; j < shape.getWidth(); ++j) {
+    //        if (shape.getCell(i, j) != ' ') {
+    //            // Vérifier que l'index n'est pas négatif avant d'accéder à board
+    //            if (row - 2 + i > 0 && board[row - 2 + i][col - 1 + j] != playerNumber && board[row - 2 + i][col - 1 + j] != '0') {
+    //                return false;
+    //            }
+    //            if (col - 2 + j > 0 && board[row - 1 + i][col - 2 + j] != playerNumber && board[row - 1 + i][col - 2 + j] != '0') {
+    //                return false;
+    //            }
+    //            if (col + j < gridSize - 1 && board[row - 1 + i][col + j] != playerNumber && board[row - 1 + i][col + j] != '0') {
+    //                return false;
+    //            }
+    //            if (row + i < gridSize - 1 && board[row + i][col - 1 + j] != playerNumber && board[row + i][col - 1 + j] != '0') {
+    //                return false;
+    //            }
+    //        }
+    //    }
+    //}
 
     // condition d'arrêt si il n'y a pas de carré du joueur collé
-    bool state = true;
-    for (size_t i = 0; i != shape.getHeight(); ++i) {
-        for (size_t j = 0; j != shape.getWidth(); ++j) {
-            if (shape.getCell(i, j) != ' ') {
-                // Vérifier que l'index n'est pas négatif avant d'accéder à board
-                if (row - 1 + i > 0 && row - 1 + i < gridSize && col - 1 + j > 0 && col - 1 + j < gridSize) {
-                    if (boardPlayeur[row - 2 + i][col - 1 + j] == playerNumber ||
-                        boardPlayeur[row - 1 + i][col - 2 + j] == playerNumber ||
-                        boardPlayeur[row - 1 + i][col + j] == playerNumber ||
-                        boardPlayeur[row + i][col - 1 + j] == playerNumber) {
-                        state = false;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    
-    if (state) {
-        return false;
-    }
+    //bool state = true;
+    //for (size_t i = 0; i < shape.getHeight(); ++i) {
+    //    for (size_t j = 0; j < shape.getWidth(); ++j) {
+    //        if (shape.getCell(i, j) != ' ') {
+    //            // Vérifier que l'index n'est pas négatif avant d'accéder à board
+    //            if (row - 2 + i >= 0 && board[row - 2 + i][col - 1 + j] == playerNumber ||
+    //                col - 2 + j >= 0 && board[row - 1 + i][col - 2 + j] == playerNumber ||
+    //                col + j < board[row - 1 + i].size() && board[row - 1 + i][col + j] == playerNumber ||
+    //                row + i < board.size() && board[row + i][col - 1 + j] == playerNumber) {
+    //                state = false;
+    //            }
+    //        }
+    //    }
+    //}
 
-    for (std::size_t i = 0; i != shape.getHeight(); ++i) {
-        for (size_t j = 0; j != shape.getWidth(); ++j) {
+    //if (state) {
+    //    return false;
+    //}
+
+    for (size_t i = 0; i < shape.getHeight(); ++i) {
+        for (size_t j = 0; j < shape.getWidth(); ++j) {
             if (shape.getCell(i, j) != ' ') {
                 boardPlayeur[row - 1 + i][col - 1 + j] = playerNumber;
                 board[row - 1 + i][col - 1 + j] = 1;
@@ -214,3 +206,51 @@ bool Board::placeShape(const Shape1& shape, int playerNumber, int row, int col) 
 
     return true;
 }
+
+// Helper function to calculate the count of grass cells (#) around the player's number
+int Board::calculateGrassCount(int playerNumber, int row, int col, int squareSize) const {
+    int grassCount = 0;
+
+    for (int i = row; i < row + squareSize; ++i) {
+        for (int j = col; j < col + squareSize; ++j) {
+            if (board[i][j] == '#') {
+                grassCount++;
+            }
+        }
+    }
+
+    return grassCount;
+}
+
+int Board::calculatePlayerScore(int playerNumber) const {
+    int maxSquareSize = 0;
+    int grassCount = 0;
+
+    for (int row = 0; row < gridSize; ++row) {
+        for (int col = 0; col < gridSize; ++col) {
+            if (boardPlayeur[row][col] == playerNumber) {
+                // Check the size of the square around the player's number
+                int squareSize = 1;
+                while (row + squareSize < gridSize && col + squareSize < gridSize &&
+                    boardPlayeur[row + squareSize][col] == playerNumber &&
+                    boardPlayeur[row][col + squareSize] == playerNumber &&
+                    boardPlayeur[row + squareSize][col + squareSize] == playerNumber) {
+                    squareSize++;
+                }
+
+                if (squareSize > maxSquareSize) {
+                    maxSquareSize = squareSize;
+                }
+
+                // Use the helper function to calculate grass count
+                grassCount += calculateGrassCount(playerNumber, row, col, squareSize);
+            }
+        }
+    }
+
+    return maxSquareSize * grassCount;
+}
+
+
+
+
