@@ -105,7 +105,7 @@ int main() {
     std::vector<Shape1> allTilesGame;
 
     Tile tiles;
-    for (int i = 0; i < 96; ++i) {
+    for (int i = 0; i < 98; ++i) {
         allTilesGame.push_back(Shape1(tiles.getShape(i)));
     }
 

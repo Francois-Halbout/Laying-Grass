@@ -2,11 +2,7 @@
 #include "Tile.h"
 
 const std::vector<std::vector<std::vector<char>>> shapes = {
-	{   {'#', ' '},
-		{'#', ' '},
-		{'#', '#'} },
-
-		{ {'#', ' ', ' '},
+	{	{'#', ' ', ' '},
 		{'#', '#', '#'} },
 
 	{   {' ', '#', ' '},
@@ -453,10 +449,9 @@ const std::vector<std::vector<std::vector<char>>> shapes = {
 
 
 std::vector<std::vector<char>> Tile::getShape(int shapeIndex) {
-    if (shapeIndex < 0 || shapeIndex > 87) {
-        return {	{'#', ' '},
-					{'#', ' '},
-					{'#', '#'} };
+    if (shapeIndex < 0 || shapeIndex > 90) {
+		currentShape = shapes[0];
+        return currentShape;
     }
 
 	currentShape = shapes[shapeIndex];
