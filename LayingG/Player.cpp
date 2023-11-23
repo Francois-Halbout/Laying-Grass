@@ -92,7 +92,8 @@ void Player::displayNextTiles() const {
 
 
 // Inside the Player class implementation
-void Player::manipulateTile(Shape1& tile) {
+std::vector<Tile> Player::manipulateTile(std::vector<Tile>& tile) {
+    Tile& currentTile = tile.back();
     char choice;
 
     do {
@@ -100,14 +101,15 @@ void Player::manipulateTile(Shape1& tile) {
         std::cin >> choice;
 
         if (choice == 'R') {
-            tile.rotateClockwise();
-            displayEvolution(tile);
+            currentTile.rotateClockwise();
+            displayEvolution(currentTile);
         }
         else if (choice == 'F') {
-            tile.flip();
-            displayEvolution(tile);
+            currentTile.flip();
+            displayEvolution(currentTile);
         }
     } while (choice == 'R' || choice == 'F');
+    return tile;
 }
 
 void Player::displayEvolution(const Shape1& tile) const {

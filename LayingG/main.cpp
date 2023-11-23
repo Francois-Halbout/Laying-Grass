@@ -119,7 +119,7 @@ int main() {
 
                 // Ask the player to manipulate and place the tile
                 player.displayNextTiles();  // Display the next tiles
-                player.manipulateTile(allTiles.back());  // Allow the player to manipulate the tile
+                allTiles = player.manipulateTile(allTiles);  // Allow the player to manipulate the tile
 
                 int row, col;
 
