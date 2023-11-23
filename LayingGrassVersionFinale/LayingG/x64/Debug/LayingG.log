@@ -1,0 +1,14 @@
+﻿  Board.cpp
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(73,20): warning C4309: 'return' : troncation de valeur de constante
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(74,20): warning C4309: 'return' : troncation de valeur de constante
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(140,34): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(140,31): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(148,34): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(148,31): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(178,34): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(178,31): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(199,34): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(199,31): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(226,16): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\LayingG\Board.cpp(227,18): warning C4267: 'initialisation' : conversion de 'size_t' en 'int', perte possible de données
+  LayingG.vcxproj -> C:\Users\franc\OneDrive\Bureau\Laying-Grass-main (11)\Laying-Grass-main\x64\Debug\LayingG.exe
