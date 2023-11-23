@@ -223,13 +223,14 @@ bool Board::placeShape(const Shape1& shape, int playerNumber, int row, int col) 
     return true;
 }
 
-// Helper function to calculate the count of grass cells (#) around the player's number
-int Board::calculateGrassCount(int playerNumber, int row, int col, int squareSize) const {
+
+int Board::calculateGrass(int playerNumber) {
+
     int grassCount = 0;
 
-    for (int i = row; i < row + squareSize; ++i) {
-        for (int j = col; j < col + squareSize; ++j) {
-            if (board[i][j] == '#') {
+    for (int i = 0; i < boardPlayeur.size(); ++i) {
+        for (int j = 0; j < boardPlayeur[0].size(); ++j) {
+            if (boardPlayeur[i][j] == playerNumber) {
                 grassCount++;
             }
         }
@@ -239,33 +240,49 @@ int Board::calculateGrassCount(int playerNumber, int row, int col, int squareSiz
 }
 
 int Board::calculatePlayerScore(int playerNumber) const {
-    int maxSquareSize = 0;
-    int grassCount = 0;
+    int maxCarre = 0;
+    int lignes = boardPlayeur.size();
+    int colonnes = boardPlayeur[0].size();
 
-    for (int row = 0; row < gridSize; ++row) {
-        for (int col = 0; col < gridSize; ++col) {
-            if (boardPlayeur[row][col] == playerNumber) {
-                // Check the size of the square around the player's number
-                int squareSize = 1;
-                while (row + squareSize < gridSize && col + squareSize < gridSize &&
-                    boardPlayeur[row + squareSize][col] == playerNumber &&
-                    boardPlayeur[row][col + squareSize] == playerNumber &&
-                    boardPlayeur[row + squareSize][col + squareSize] == playerNumber) {
-                    squareSize++;
+    for (int i = 0; i < lignes; ++i) {
+        for (int j = 0; j < colonnes; ++j) {
+            if (boardPlayeur[i][j] == playerNumber) {
+                int carre = 1;
+
+                while (i + carre < lignes && j + carre < colonnes) {
+                    bool ligneOk = true;
+                    bool colonneOk = true;
+
+                    for (int x = i; x <= i + carre; ++x) {
+                        if (boardPlayeur[x][j + carre] != playerNumber) {
+                            ligneOk = false;
+                            break;
+                        }
+                    }
+
+                    for (int y = j; y <= j + carre; ++y) {
+                        if (boardPlayeur[i + carre][y] != playerNumber) {
+                            colonneOk = false;
+                            break;
+                        }
+                    }
+
+                    if (ligneOk && colonneOk) {
+                        carre++;
+                    }
+                    else {
+                        break;
+                    }
                 }
 
-                if (squareSize > maxSquareSize) {
-                    maxSquareSize = squareSize;
-                }
-
-                // Use the helper function to calculate grass count
-                grassCount += calculateGrassCount(playerNumber, row, col, squareSize);
+                maxCarre = max(maxCarre, carre);
             }
         }
     }
 
-    return maxSquareSize * grassCount;
+    return maxCarre;
 }
+
 
 
 

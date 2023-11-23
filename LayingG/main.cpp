@@ -204,19 +204,39 @@ int main() {
     std::cout << "The game is over.\n";
 
     int maxScore = -1;
-    Player winner;
+    std::vector<int> liste_winner = { -1 };
 
     for (auto& player : players) {
         int playerScore = gameBoard.calculatePlayerScore(player.getNumber());
         std::cout << "Player " << player.getName() << " score: " << playerScore << '\n';
 
-        if (playerScore > maxScore || (playerScore == maxScore && playerScore > winner.getNumber())) {
+
+        if (playerScore > maxScore) {
             maxScore = playerScore;
-            winner = player;
+            liste_winner = { player.getNumber() };
+        }
+        else if (playerScore == maxScore){
+            liste_winner.push_back(player.getNumber());
         }
     }
 
-    std::cout << "The winner is \"" << winner.getName() << "\"!\n";
+    int maxgrass = -1;
+    int winner = -1;
+    if (liste_winner.size() > 1) {
+        for (int joueur = 0; joueur <= liste_winner.size(); joueur++) {
+            int grassjoueur = gameBoard.calculateGrass(liste_winner[joueur]);
+            if (maxgrass < grassjoueur) {
+                maxgrass = grassjoueur;
+                winner = liste_winner[joueur];
+            }
+        }
+        std::cout << "The winner is \"" << players.at(winner).getName() << "\"!\n";
+    }
+    else {
+        std::cout << "The winner is \"" << players.at(liste_winner.at(0)).getName() << "\"!\n";
+    }
+
+    
 
 
 

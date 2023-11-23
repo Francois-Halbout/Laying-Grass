@@ -17,7 +17,7 @@ public:
     void setPlayerStartingPosition(int playerNumber, char color);
 
     int calculatePlayerScore(int playerNumber) const;  // Updated declaration
-    int calculateGrassCount(int playerNumber, int row, int col, int squareSize) const;  // New declaration
+    int calculateGrass(int playerNumber);
 
 private:
     int gridSize;
