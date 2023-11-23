@@ -124,7 +124,10 @@ int main() {
 
         for (auto& player : players) {
             std::cout << "Player " << player.getName() << ", it's your turn!\n";
-            
+
+            if (indexTile >= allTiles.size()) {
+                indexTile = 0;
+            }
             Shape1 currentTile = allTiles.at(indexTile); // round correspond à l'indice de la shape dans la liste alltiles
             
             if (currentTile.getWidth() != 0) {
