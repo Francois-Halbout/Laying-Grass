@@ -1,14 +1,17 @@
 // Tile.h
+#include <vector>
 #ifndef TILE_H
 #define TILE_H
 
-#include "Shape.h"
 
-class Tile : public Shape1 {
+class Tile {
 public:
     Tile();
-    Tile(const std::vector<std::vector<char>>& initialShape);
     ~Tile();
+    std::vector<std::vector<char>> getShape(int shapeIndex);
+
+private:
+    std::vector<std::vector<char>> currentShape;
 };
 
 #endif // TILE_H

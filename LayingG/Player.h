@@ -31,11 +31,12 @@ public:
     int getNumber() const;
     void setNumber(int num);
 
-    void setNextTiles(const std::vector<Shape1>& tiles);
+    void setNextTiles(int& indexTile);
     const std::vector<Shape1>& getNextTiles() const;
     void displayNextTiles() const;
-    std::vector<Tile> manipulateTile(std::vector<Tile>& tile);
+    Shape1 manipulateTile(Shape1& tile);
     void displayEvolution(const Shape1& tile) const;
+    int indexTile;
 
 private:
     std::string name;

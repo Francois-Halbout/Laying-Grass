@@ -5,6 +5,7 @@
 
 Player::Player() : hasStartingTile(false), tileExchangeCoupons(0), shapeExchangeCoupons(0), number(0) {
     territory.resize(3, std::vector<char>());
+    indexTile = 0;
 }
 
 int Player::getNumber() const {
@@ -74,8 +75,8 @@ void Player::setNumber(int num) {
     number = num;
 }
 
-void Player::setNextTiles(const std::vector<Shape1>& tiles) {
-    nextTiles = tiles;
+void Player::setNextTiles(int& indexTile) {
+    indexTile = indexTile + 1;
 }
 
 const std::vector<Shape1>& Player::getNextTiles() const {
@@ -92,8 +93,8 @@ void Player::displayNextTiles() const {
 
 
 // Inside the Player class implementation
-std::vector<Tile> Player::manipulateTile(std::vector<Tile>& tile) {
-    Tile& currentTile = tile.back();
+Shape1 Player::manipulateTile(Shape1& tile) {
+    Shape1& currentTile = tile;
     char choice;
 
     do {

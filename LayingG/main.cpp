@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "Player.h"
+#include "Shape.h"
 #include "Board.h"
 #include "Tile.h"  // Ajout de l'inclusion de Tile.h
 #include <algorithm>
@@ -93,12 +94,12 @@ int main() {
 
     gameBoard.display();
 
-
     // Initialisation des tuiles
-    std::vector<Tile> allTiles;
-    for (int i = 0; i < 96; ++i) {
-        Tile tile;
-        allTiles.push_back(tile);
+    std::vector<Shape1> allTiles;
+
+    Tile tiles;
+    for (int i = 0; i < 88; ++i) {
+        allTiles.push_back(Shape1(tiles.getShape(i)));
     }
 
     std::random_shuffle(allTiles.begin(), allTiles.end());
@@ -106,20 +107,24 @@ int main() {
     // Boucle de jeu
     // ...
 // Inside the game loop
+    int indexTile = 0;
+
     for (int round = 1; round <= 9; ++round) {
         std::cout << "Current round: " << round << "\n";
 
         for (auto& player : players) {
             std::cout << "Player " << player.getName() << ", it's your turn!\n";
-
-            if (!allTiles.empty()) {
+            
+            Shape1 currentTile = allTiles.at(indexTile); // round correspond à l'indice de la shape dans la liste alltiles
+            
+            if (currentTile.getWidth() != 0) {
                 // Display the current tile's shape
                 std::cout << "Current Tile:\n";
-                allTiles.back().display();
+                currentTile.display();
 
                 // Ask the player to manipulate and place the tile
                 player.displayNextTiles();  // Display the next tiles
-                allTiles = player.manipulateTile(allTiles);  // Allow the player to manipulate the tile
+                currentTile = player.manipulateTile(currentTile);  // Allow the player to manipulate the tile
 
                 int row, col;
 
@@ -127,7 +132,7 @@ int main() {
                     std::cout << "Enter the row and column to place the tile : ";
                     std::cin >> row >> col;
 
-                    if (gameBoard.placeShape(allTiles.back(), player.getNumber(), row, col) && player.canPlaceTile(allTiles.back())) {
+                    if (gameBoard.placeShape(currentTile, player.getNumber(), row, col) && player.canPlaceTile(currentTile)) {
                         break;
                     }
                     else {
@@ -140,7 +145,7 @@ int main() {
                 std::cout << std::endl;
 
                 // Remove the placed tile from the list
-                allTiles.pop_back();
+                indexTile = indexTile + 1;
             }
         }
     }
